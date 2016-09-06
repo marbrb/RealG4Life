@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'core',
 ]
 
 MIDDLEWARE = [
@@ -54,7 +55,7 @@ ROOT_URLCONF = 'realG4lifePy.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['/home/glud/project/roomi/templates'],
+        'DIRS': ['/home/glud/project/RealG4Life/templates/'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
