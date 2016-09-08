@@ -1,25 +1,35 @@
+import pika
+from core.models import Comments, User
 from django.shortcuts import render
-from django.http import HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt   #Skip the csrf middleware protection
-from django.http import HttpResponse, HttpResponseServerError
+from django.http import HttpResponse, HttpResponseServerError, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.sessions.models import Session
-from core.models import User
-import pika
-from django.contrib.auth.views import login, logout
+from django.contrib.auth import authenticate, login, logout
 
-@login_required(login_url='/login/')
+#@login_required(login_url='/login/')
 def home(request):
     #session = Session.objects.get(session_key=request.POST.get('sessionid'))
 
-    return render(request, 'home.html', {'session': "proximamente gente."})
+    return render(request, 'home.html', {'comments': ['perrito','david la zorra']})
 
 
 
-def login(request):
-    pass
+def login_view(request):
+    #user --- authenticate(user=user, password=pass) --- return a User object
+    #login(request, user)
+    username = request.POST['username']
+    password = request.POST['password']
+    user = authenticate(username=username, password=password)   #si las credenciales no sirven retorna None
+    if user is not None:
+        login(request, user)    # saves the user’s ID in the session
+        return HttpResponse("Si sirvio gente")
+    else:
+        return HttpResponse("No sirvio gente")
 
-def logout(request):
+
+def logout_view(request):
+    """Para hacer logout el usuario debio entrar con la funcion login"""
     #logout(request)
     return HttpResponseRedirect('/')
 
