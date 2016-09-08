@@ -55,7 +55,7 @@ ROOT_URLCONF = 'realG4lifePy.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['/home/glud/project/RealG4Life/templates/'],
+        'DIRS': ['../templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
