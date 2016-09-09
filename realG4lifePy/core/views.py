@@ -18,15 +18,20 @@ def home(request):
 def login_view(request):
     #user --- authenticate(user=user, password=pass) --- return a User object
     #login(request, user)
-    username = request.POST['username']
-    password = request.POST['password']
-    user = authenticate(username=username, password=password)   #si las credenciales no sirven retorna None
-    if user is not None:
-        login(request, user)    # saves the user’s ID in the session
-        return HttpResponse("Si sirvio gente")
-    else:
-        return HttpResponse("No sirvio gente")
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username=username, password=password)   #si las credenciales no sirven retorna None
+        if user is not None:
+            login(request, user)    # saves the user’s ID in the session
 
+            return HttpResponse(str(request.session.items()))
+            #return HttpResponseRedirect("/admin/")
+        else:
+            #return HttpResponse("No sirvio gente")
+            return HttpResponse(str(request.session.items()))
+    elif request.method == 'GET':
+        return render(request, 'login.html')
 
 def logout_view(request):
     """Para hacer logout el usuario debio entrar con la funcion login"""
