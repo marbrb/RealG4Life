@@ -1,12 +1,22 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Home</title>
+    <title>RealG4Life chat pro</title>
   </head>
   <body>
-    <h1>Tittle</h1>
 
     {{ session }}
+    <ul id="comments">
+      {% for comment in comments %}
+        <li>{{comment.user}}: {{comment.text}}</li>
+      {% endfor %}
+    </ul>
+    <input type="text" id="comment" name="comment"
+            placeholder="Write something..." />
+
   </body>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+  <script src="client.js"> </script>
+  <script src="app.js"> </script>
 </html>
