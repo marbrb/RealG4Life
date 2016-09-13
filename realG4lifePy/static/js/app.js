@@ -10,7 +10,7 @@ socket.on('connect', function() {
 socket.on('message', function(message) {
   console.log('Got a new message');
 
-  $('çomments').append('<li>' + data '</data>');
+  $('çomments').append('<li>' + data + '</data>');
   $('comment').focus();
 })
 
