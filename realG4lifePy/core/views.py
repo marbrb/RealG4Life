@@ -1,5 +1,5 @@
 import pika
-from core.models import Comments, User
+from core.models import Comment, User
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt   #Skip the csrf middleware protection
 from django.http import HttpResponse, HttpResponseServerError, HttpResponseRedirect
@@ -10,8 +10,8 @@ from django.contrib.auth import authenticate, login, logout
 #@login_required(login_url='/login/')
 def home(request):
     #session = Session.objects.get(session_key=request.POST.get('sessionid'))
-
-    return render(request, 'home.html', {'comments': ['perrito','david la zorra']})
+    comments = Comment.objects.select_related().all()[0:100]
+    return render(request, 'home.html', {'comments': comments})
 
 
 
@@ -34,9 +34,11 @@ def login_view(request):
         return render(request, 'login.html')
 
 def logout_view(request):
-    """Para hacer logout el usuario debio entrar con la funcion login"""
-    #logout(request)
+    #request.user
+    logout(request)  #session data for the current request is completely cleaned out
     return HttpResponseRedirect('/')
+    #TODO: hacer un boton de logout
+
 
 
 

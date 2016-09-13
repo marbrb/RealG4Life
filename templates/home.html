@@ -2,9 +2,11 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>RealG4Life chat</title>
+    <title>RealG4Life chat pro</title>
   </head>
   <body>
+
+    {{ session }}
     <ul id="comments">
       {% for comment in comments %}
         <li>{{comment.user}}: {{comment.text}}</li>
@@ -12,8 +14,11 @@
     </ul>
     <input type="text" id="comment" name="comment"
             placeholder="Write something..." />
+
   </body>
+  {% include 'footer.html' %}
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-  <script src="client.js"> </script>
-  <script src="app.js"> </script>
+  <!-- Find a way to put the socket server ip in a more dynamic way -->
+  <script src="static/js/socket.io.js"> </script>
+  <script src="static/js/app.js"> </script>
 </html>
