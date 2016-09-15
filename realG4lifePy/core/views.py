@@ -6,6 +6,7 @@ from django.http import HttpResponse, HttpResponseServerError, HttpResponseRedir
 from django.contrib.auth.decorators import login_required
 from django.contrib.sessions.models import Session
 from django.contrib.auth import authenticate, login, logout
+from core.forms import FormLogin
 
 #@login_required(login_url='/login/')
 def home(request):
@@ -14,24 +15,30 @@ def home(request):
     return render(request, 'home.html', {'comments': comments})
 
 
-
-def login_view(request):
-    #user --- authenticate(user=user, password=pass) --- return a User object
-    #login(request, user)
+def loginWithForm(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(username=username, password=password)   #si las credenciales no sirven retorna None
-        if user is not None:
-            login(request, user)    # saves the user’s ID in the session
+        form = FormLogin(request.POST)
 
-            return HttpResponse(str(request.session.items()))
-            #return HttpResponseRedirect("/admin/")
+        if form.is_valid():
+            cd = form.cleaned_data  #diccionario de datos que se enviaron bin en el form
+            username = cd['username']
+            password = cd['password']
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return HttpResponseRedirect('/')
+            else:
+
+                return render(request, 'login.html', {'form': form})
         else:
-            #return HttpResponse("No sirvio gente")
-            return HttpResponse(str(request.session.items()))
+            return render(request, 'login.html', {'form': form})
+
     elif request.method == 'GET':
-        return render(request, 'login.html')
+        return render(request, 'login.html', {'form': FormLogin})
+
+
+
+
 
 def logout_view(request):
     #request.user
