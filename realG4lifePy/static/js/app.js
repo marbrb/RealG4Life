@@ -1,7 +1,4 @@
-var socket_server = '10.20.232.45';
-var socket_port = 8085;
-
-var socket = io.connect(socket_server, {port: socket_port});
+var socket = io.connect('10.20.232.45:8085');
 
 socket.on('connect', function() {
   console.log('connected');

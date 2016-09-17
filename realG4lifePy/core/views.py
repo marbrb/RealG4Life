@@ -8,11 +8,12 @@ from django.contrib.sessions.models import Session
 from django.contrib.auth import authenticate, login, logout
 from core.forms import FormLogin
 
-#@login_required(login_url='/login/')
+@login_required(login_url='/login/')
 def home(request):
     #session = Session.objects.get(session_key=request.POST.get('sessionid'))
     comments = Comment.objects.select_related().all()[0:100]
-    return render(request, 'home.html', {'comments': comments})
+    response = render(request, 'home.html', {'comments': comments})
+    return response
 
 
 def loginWithForm(request):
@@ -25,19 +26,16 @@ def loginWithForm(request):
             password = cd['password']
             user = authenticate(username=username, password=password)
             if user is not None:
-                login(request, user)
-                return HttpResponseRedirect('/')
-            else:
+                if user.is_active:
+                    login(request, user)
+                    return HttpResponseRedirect('/')
 
-                return render(request, 'login.html', {'form': form})
-        else:
-            return render(request, 'login.html', {'form': form})
+            else:
+                mensaje = 'Nombre de usuario o contraseña no valido'
+                return render(request, 'login.html', {'form': form, 'mensaje':mensaje})
 
     elif request.method == 'GET':
         return render(request, 'login.html', {'form': FormLogin})
-
-
-
 
 
 def logout_view(request):
@@ -45,9 +43,6 @@ def logout_view(request):
     logout(request)  #session data for the current request is completely cleaned out
     return HttpResponseRedirect('/')
     #TODO: hacer un boton de logout
-
-
-
 
 
 @csrf_exempt    #ignorara la proteccion csrf
@@ -75,5 +70,5 @@ def node_api(request):
 
         return HttpResponse("Todo nice gente.")
 
-    except:
+    except Exception as e:
         return HttpResponseServerError(str(e))
