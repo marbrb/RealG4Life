@@ -7,12 +7,12 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.sessions.models import Session
 from django.contrib.auth import authenticate, login, logout
 from core.forms import FormLogin
-
+from realG4lifePy.settings import SOCKET_SERVER
 @login_required(login_url='/login/')
 def home(request):
     #session = Session.objects.get(session_key=request.POST.get('sessionid'))
     comments = Comment.objects.select_related().all()[0:100]
-    response = render(request, 'home.html', {'comments': comments})
+    response = render(request, 'home.html', {'comments': comments,'socket_server':SOCKET_SERVER+'/socket.io/socket.io.js'})
     return response
 
 

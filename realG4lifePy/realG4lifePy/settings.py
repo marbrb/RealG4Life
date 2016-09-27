@@ -15,6 +15,7 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+SOCKET_SERVER = os.environ.get("SOCKET_SERVER", None)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
@@ -57,7 +58,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'realG4lifePy.urls'
 
 USE_ETAGS = True
-CORS_ORIGIN_WHITELIST = ('10.20.232.45','localhost')
+CORS_ORIGIN_WHITELIST = (SOCKET_SERVER,'localhost')
 CORS_ALLOW_CREDENTIALS = True
 
 TEMPLATES = [
@@ -107,7 +108,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
